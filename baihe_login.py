@@ -1,4 +1,8 @@
 # --coding=utf8--
-import GetTestCase
-import InterfaceInfo
+import InterfaceTest
 
+excelName = 'Baihe_Login.xlsx'
+test = InterfaceTest.InterfaceTest(excelName)
+s = test.test_result()
+for i in s:
+    print(i.strip('\''))
