@@ -1,7 +1,7 @@
 # --coding=utf8--
 import TestCase
 import InterfaceInfo
-import operator
+import json
 
 
 class InterfaceTest:
@@ -17,29 +17,36 @@ class InterfaceTest:
         req = []
         for i in self.param_list:
             test_info = InterfaceInfo.InterfaceInfo(i[1].strip('\''), i[2].strip('\''))
-            s = test_info.interface_test()
-            # if operator.eq(eval(i[3].strip('\"')), s):
-            real_result = eval(i[3].strip('\"'))
-            print(inf.walk_sort(real_result))
-            if operator.eq(inf.walk_sort(s) , inf.walk_sort(real_result)):
-                req.append('测试通过')
+            actual_result = test_info.interface_test()
+            expect_result = json.loads(i[3].strip('\''))
+            result = inf.set_result(expect_result,actual_result)
+            if result:
+                print("测试通过")
             else:
-                req.append('测试失败')
+                print("测试失败")
         return req
 
-    def walk_sort(self, v):
-        if isinstance(v, dict):
-            for i,j in v.items():
-                inf.walk_sort(j)
-        if isinstance(v, (tuple, list)):
-            v.sort()
-            for k in v:
-                inf.walk_sort(k)
-        return v
+    #expect_result:预期结果,actual_result:实际结果
+    #判断结果是否符合预期
+    def set_result(self,expect_result,actual_result):
+        result = True
+        for i in expect_result:
+            if i == 'code' or i == 'msg':
+                if expect_result[i] != actual_result[i]:
+                    result = False
+                    break
+            elif i == 'other' or i == 'apver':
+                if expect_result[i] != actual_result['data'][i]:
+                    result = False
+                    break
+            else:
+                if expect_result[i] != actual_result['data']['result'][i]:
+                    result = False
+                    break
+        return result
 
 excelName = 'Baihe_Login.xlsx'
 
 inf = InterfaceTest(excelName)
-req1 = inf.test_result()
-print(req1)
+inf.test_result()
 
