@@ -17,7 +17,7 @@ class InterfaceInfo:
             req = requests.post(self.interface_url, self.headers)
         elif self.interface_method == 'get':
             req = requests.get(self.interface_url, self.headers)
-        return req.json()
+        return req.text
 
 
 
