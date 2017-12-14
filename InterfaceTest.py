@@ -24,6 +24,7 @@ class InterfaceTest:
                 print("测试通过")
             else:
                 print("测试失败")
+                print(actual_result)
         return req
 
     #expect_result:预期结果,actual_result:实际结果
