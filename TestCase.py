@@ -12,6 +12,7 @@ class TestCase:
     def __init__(self, excel_name):
         # 获取当前系统信息,根据系统使用不同的反斜杠
         pf_system = platform.system()
+        self.str_system = ''
         if pf_system == 'windows':
             self.str_system = '\\'
         elif pf_system == 'Linux' or pf_system == 'Darwin':
